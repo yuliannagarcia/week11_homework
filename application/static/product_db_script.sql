@@ -1,4 +1,4 @@
-create database 
+create database
 product_db;
 
 use product_db;
@@ -21,9 +21,9 @@ in productPrice float
 begin
 insert into product(
 productName, productDescription, productPrice)
-values 
+values
 (productName, productDescription, productPrice);
-end // 
+end //
 
 call insertProduct ('handbag', 'Gucci', '99.99');
 

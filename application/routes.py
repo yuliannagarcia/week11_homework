@@ -1,10 +1,7 @@
 from flask import render_template, url_for, request, redirect, session
-from application import app
+from application import app  # Importing app directly from application module
 from application.data_access import connect_to_database
 
-
-# from datetime import datetime
-# import os
 
 @app.route('/')
 @app.route('/home')
@@ -17,8 +14,7 @@ def home():
 def add_to_basket(product_id):
     session.setdefault('basket', [])
     session['basket'].append(product_id)
-
-    return redirect(url_for('product_list'))
+    return redirect(url_for('home'))
 
 
 @app.route('/basket')
@@ -42,14 +38,14 @@ def add_product_route():
     description = request.form['description']
     price = request.form['price']
     add_product(name, description, price)
-    return redirect('/')
+    return redirect(url_for('home'))
 
 
 @app.route('/get_products')
 def get_products():
     conn = connect_to_database()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM product")
+    cursor.execute("SELECT * FROM products")  # Assuming table name is 'products'
     products = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -59,8 +55,6 @@ def get_products():
 def add_product(productName, productDescription, productPrice):
     conn = connect_to_database()
     cursor = conn.cursor()
-    # cursor.execute("call procedure insertProduct('wallet', 'LV', '49.99')",
-    #                (productName, productDescription, productPrice))
     cursor.callproc("insertProduct", [productName, productDescription, productPrice])
     conn.commit()
     cursor.close()
