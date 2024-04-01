@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% block body_content %}
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,8 +12,14 @@
         {% for product in products %}
             <li>
                 <form action="{{ url_for('add_to_basket', product_id=product.id) }}" method="post">
-                    <label>{{ product.name }} - £{{ product.price }}</label>
-                    <input type="number" name="quantity" value="1" min="1">
+       <div>
+           <h3>{{ product['name'] }}</h3>
+           <p>{{ product['description'] }}</p>
+           <p>Price: ${{ product['price'] }}</p>
+           <!-- Add form for adding product to basket -->
+       </div>
+                    <label>{{ product['name'] }} {{ product['price'] }}</label>
+                    <input type="number" name="quantity" value="0" min="1">
                     <button type="submit">Add to Basket</button>
                 </form>
             </li>
