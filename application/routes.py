@@ -10,13 +10,23 @@ def home():
     return render_template('index.html', products=products)
 
 
+# @app.route('/add_to_basket/<int:product_id>', methods=['POST'])
+# def add_to_basket(product_id):
+#     if request.method == 'POST':
+#         # Handle POST request to add product to basket
+#         session.setdefault('basket', [])
+#         session['basket'].append(product_id)
+#     return redirect(url_for('home'))
+
 @app.route('/add_to_basket/<int:product_id>', methods=['POST'])
 def add_to_basket(product_id):
     if request.method == 'POST':
         # Handle POST request to add product to basket
         session.setdefault('basket', [])
-        session['basket'].append(product_id)
+        quantity = int(request.form['quantity'])  # Retrieve quantity from form data
+        session['basket'].append({'product_id': product_id, 'quantity': quantity})
     return redirect(url_for('home'))
+
 
 
 @app.route('/basket', methods=['GET', 'POST'])
