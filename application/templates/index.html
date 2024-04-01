@@ -11,14 +11,12 @@
     <ul>
         {% for product in products %}
             <li>
+                <h3>{{ product['ProductName'] }}</h3>
+                <p>{{ product['ProductDescription'] }}</p>
+                <p>Price: £{{ product['ProductPrice'] }}</p>
+                <!-- Add form for adding product to basket -->
                 <form action="{{ url_for('add_to_basket', product_id=product.id) }}" method="post">
-       <div>
-           <h3>{{ product['name'] }}</h3>
-           <p>{{ product['description'] }}</p>
-           <p>Price: ${{ product['price'] }}</p>
-           <!-- Add form for adding product to basket -->
-       </div>
-                    <label>{{ product['name'] }} {{ product['price'] }}</label>
+                    <label>Quantity:</label>
                     <input type="number" name="quantity" value="0" min="1">
                     <button type="submit">Add to Basket</button>
                 </form>
