@@ -1,8 +1,24 @@
 {% extends "layout.html" %}
+
 {% block body_content %}
-<section>
-
-
-</section>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Basket</title>
+</head>
+<body>
+    <h1>Shopping Basket</h1>
+    <ul>
+        {% for item in basket %}
+            {% set product = products[item.product_id - 1] %}
+            <li>{{ product.name }} - Quantity: {{ item.quantity }}</li>
+        {% endfor %}
+    </ul>
+    <p>Total Price: ${{ total_price }}</p>
+    <a href="{{ url_for('home') }}">Continue Shopping</a>
+</body>
+</html>
 {% endblock %}
+

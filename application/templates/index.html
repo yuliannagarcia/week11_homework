@@ -1,9 +1,26 @@
 {% extends "layout.html" %}
 {% block body_content %}
-<section>
-<h1>Hi from index page</h1>
-
-</section>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping</title>
+</head>
+<body>
+    <h1>Products</h1>
+    <ul>
+        {% for product in products %}
+            <li>
+                <form action="{{ url_for('add_to_basket', product_id=product.id) }}" method="post">
+                    <label>{{ product.name }} - £{{ product.price }}</label>
+                    <input type="number" name="quantity" value="1" min="1">
+                    <button type="submit">Add to Basket</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('view_basket') }}">View Basket</a>
+</body>
+</html>
 {% endblock %}
-
