@@ -32,6 +32,7 @@
 #
 
 import mysql.connector
+from . import app
 
 
 def connect_to_database():
@@ -61,7 +62,7 @@ def get_products():
 
     try:
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM products")
+        cursor.execute("SELECT * FROM product")  # Corrected table name to "product"
         products = cursor.fetchall()
         return products
     except mysql.connector.Error as e:
@@ -82,3 +83,21 @@ def add_product(productName, productDescription, productPrice):
     except mysql.connector.Error as e:
         print(f"Error executing query: {e}")
         return False
+
+
+def add_product_to_database(name, description, price):
+    conn = connect_to_database()
+    if conn is None:
+        return False
+
+    try:
+        cursor = conn.cursor()
+        cursor.callproc("insertProduct", [name, description, price])
+        conn.commit()
+        return True
+    except mysql.connector.Error as e:
+        print(f"Error executing query: {e}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
