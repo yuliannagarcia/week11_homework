@@ -1,0 +1,15 @@
+{% extends "layout2.html" %}
+
+{% block body_content %}
+  <h1>Welcome AY</h1>
+  <p>Click the button below to start shopping!</p>
+  <ul class="nav justify-content-center mt-3">
+    <li class="nav-item">
+      <a class="nav-link btn btn-primary" aria-current="page" href="{{ url_for('index') }}">Start Shopping</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link btn btn-success" href="{{ url_for('view_basket') }}">View Basket</a>
+    </li>
+  </ul>
+{% endblock %}
+

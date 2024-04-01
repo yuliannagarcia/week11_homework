@@ -1,31 +1,52 @@
-{% extends "layout.html" %}
+ {% extends "layout2.html" %}
+
 {% block body_content %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping</title>
-</head>
-<body>
+  <div class="container">
     <h1>Welcome to our Online Store</h1>
-    <img src="../static/ShoppingIcons.jpeg" alt="Homepage Image" width="800">
+    <img src="../static/images/ShoppingIcons.jpeg" alt="Homepage Image" class="img-fluid" width="800">
     <h2>Featured Products</h2>
-    <ul>
-        {% for product in products %}
-            <li>
-                <h3>{{ product['ProductName'] }}</h3>
-                <p>{{ product['ProductDescription'] }}</p>
-                <p>Price: £{{ product['ProductPrice'] }}</p>
-                <!-- Add form for adding product to basket -->
-                <form action="{{ url_for('add_to_basket', product_id=product['id']) }}" method="post">
-                    <label>Quantity:</label>
-                    <input type="number" name="quantity" value="0" min="1">
-                    <button type="submit">Add to Basket</button>
-                </form>
+    <div class="row">
+      {% for product in products %}
+        <div class="col-md-4">
+          <div class="card mb-4">
+            <img src="..." class="card-img-top" alt="Product Image">
+            <div class="card-body">
+              <h5 class="card-title">{{ product['ProductName'] }}</h5>
+              <p class="card-text">{{ product['ProductDescription'] }}</p>
+              <p class="card-text">Price: £{{ product['ProductPrice'] }}</p>
+              <form action="{{ url_for('add_to_basket', product_id=product['id']) }}" method="post">
+                <div class="mb-3">
+                  <label for="quantity{{ product['id'] }}" class="form-label">Quantity:</label>
+                  <input type="number" class="form-control" id="quantity{{ product['id'] }}" name="quantity" value="1" min="1">
+                </div>
+                <button type="submit" class="btn btn-primary">Add to Basket</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <!-- Pagination links -->
+    <div class="d-flex justify-content-center">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item {% if page == 1 %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('index', page=1) }}" aria-label="Previous" style="background-color: transparent; border: none;">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% for p in range(1, total_pages + 1) %}
+            <li class="page-item {% if p == page %}active{% endif %}">
+              <a class="page-link" href="{{ url_for('index', page=p) }}" style="background-color: transparent; border: none;">{{ p }}</a>
             </li>
-        {% endfor %}
-    </ul>
-    <a href="{{ url_for('view_basket') }}">View Basket</a>
-</body>
-</html>
+          {% endfor %}
+          <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('index', page=total_pages) }}" aria-label="Next" style="background-color: transparent; border: none;">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
 {% endblock %}

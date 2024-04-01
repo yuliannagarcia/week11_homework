@@ -2,14 +2,36 @@ from flask import render_template, url_for, request, redirect, session, flash
 from application import app
 from application.data_access import add_product_to_database, remove_product_from_database
 from application.data_access import get_products
+from flask import render_template, request
+
 
 
 @app.route('/')
-# @app.route('/home')
+@app.route('/home')
 def home():
-    products_ = get_products()  # Fetch products from the database
-    return render_template('index.html', products=products_)
+    return render_template('home.html')
 
+
+PRODUCTS_PER_PAGE = 6
+
+@app.route('/index')
+def index():
+    page = request.args.get('page', 1, type=int)  # Get the page number from the query parameters
+
+    products = get_products()  # Fetch all products from the database
+
+    # Calculate the total number of pages
+    products_per_page = 6
+    total_pages = (len(products) + products_per_page - 1) // products_per_page
+
+    # Calculate the start and end indices for pagination
+    start_index = (page - 1) * products_per_page
+    end_index = min(start_index + products_per_page, len(products))
+
+    # Get the products for the current page
+    paginated_products = products[start_index:end_index]
+
+    return render_template('index.html', products=paginated_products, total_pages=total_pages, page=page)
 
 @app.route('/add_to_basket/<int:product_id>', methods=['POST'])
 def add_to_basket(product_id):
@@ -19,7 +41,7 @@ def add_to_basket(product_id):
         quantity = int(request.form['quantity'])  # Retrieve quantity from form data
         session['basket'].append({'product_id': product_id, 'quantity': quantity})
         session.modified = True  # updating session with latest basket information
-    return redirect(url_for('home'))
+    return redirect(url_for('index'))
 
 
 @app.route('/basket', methods=['GET', 'POST'])
@@ -33,8 +55,17 @@ def view_basket():
         product_id = int(request.form['product_id'])
         quantity = int(request.form['quantity'])
 
-        # Retrieve or create the basket in the session
-        basket.append({'product_id': product_id, 'quantity': quantity})
+        # Check if the product is already in the basket
+        found = False
+        for item in basket:
+            if item['product_id'] == product_id:
+                item['quantity'] += quantity
+                found = True
+                break
+
+        # If the product is not in the basket, add it
+        if not found:
+            basket.append({'product_id': product_id, 'quantity': quantity})
 
         # Update the session
         session['basket'] = basket
@@ -82,7 +113,12 @@ def calculate_total_price(basket):
 
 @app.route('/checkout', methods=['POST'])
 def checkout():
+    # Calculate total price
+    basket = session.get('basket', [])
+    total_price = calculate_total_price(basket)
+
     # Clear the session to empty the basket
     session.pop('basket', None)
-    # Render the basket template with the thank-you message shown
-    return render_template('basket.html', thank_you=True)
+
+    # Render the checkout template with the total price
+    return render_template('checkout.html', total_price=total_price)

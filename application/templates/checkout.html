@@ -1,0 +1,10 @@
+{% extends "layout2.html" %}
+
+{% block body_content %}
+  <h1>Checkout</h1>
+  <p>Total Price: £{{ total_price }}</p>
+  <p>Thank you for shopping with us!</p>
+  <form action="{{ url_for('view_basket') }}" method="get">
+    <button type="submit">Back to Basket</button>
+  </form>
+{% endblock %}
