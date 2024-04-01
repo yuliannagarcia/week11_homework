@@ -15,7 +15,7 @@
                 <p>{{ product['ProductDescription'] }}</p>
                 <p>Price: £{{ product['ProductPrice'] }}</p>
                 <!-- Add form for adding product to basket -->
-                <form action="{{ url_for('add_to_basket', product_id=product.id) }}" method="post">
+                <form action="{{ url_for('add_to_basket', product_id=product['id']) }}" method="post">
                     <label>Quantity:</label>
                     <input type="number" name="quantity" value="0" min="1">
                     <button type="submit">Add to Basket</button>
