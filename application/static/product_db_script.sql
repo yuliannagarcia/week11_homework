@@ -27,7 +27,7 @@ end //
 
 call insertProduct ('handbag', 'Gucci', '99.99');
 
-select * from product;
+select * from product;insertProduct
 
 insert into product (productName, productDescription, productPrice) values
 ('Handbag2', 'Stylish leather handbag with multiple compartments', 149.99),
@@ -47,3 +47,4 @@ insert into product (productName, productDescription, productPrice) values
 ('Gloves', 'Warm knit gloves with touchscreen compatibility', 19.99),
 ('Perfume', 'Luxurious fragrance with floral and woody notes', 69.99),
 ('Notebook', 'Sleek leather-bound notebook for jotting down ideas', 24.99);
+

@@ -11,11 +11,19 @@
     <h1>Shopping Basket</h1>
     <ul>
         {% for item in basket %}
-            {% set product = products[item.product_id - 1] %}
-            <li>{{ product.name }} - Quantity: {{ item.quantity }}</li>
+            {% set product = products|selectattr('id', 'equalto', item.product_id)|list %}
+            {% if product %}
+                {% set product = product[0] %}
+                <li>
+                    <h3>{{ product.ProductName }}</h3>
+                    <p>{{ product.ProductDescription }}</p>
+                    <p>Price: £{{ product.ProductPrice }}</p>
+                    <p>Quantity: {{ item.quantity }}</p>
+                </li>
+            {% endif %}
         {% endfor %}
     </ul>
-    <p>Total Price: ${{ total_price }}</p>
+    <p>Total Price: £{{ total_price }}</p>
     <a href="{{ url_for('home') }}">Continue Shopping</a>
 </body>
 </html>

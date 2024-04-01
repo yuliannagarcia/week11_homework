@@ -30,14 +30,13 @@ from application import app
 def connect_to_database():
     host = "localhost"
     user = "root"
-    password = "Pa$$w0rd"
+    password = ""
     database = "product_db"
 
     try:
         conn = mysql.connector.connect(
             host=host,
             user=user,
-            password=password,
             database=database
         )
         return conn
