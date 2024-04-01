@@ -175,6 +175,7 @@ def add_product():
 def print_products_and_prices():
     # Fetch products from the database
     products = get_products()
+<<<<<<< HEAD
 
     # Create a dictionary to store product names and prices
     products_and_prices = {}
@@ -185,3 +186,21 @@ def print_products_and_prices():
 
     # Return the dictionary as JSON response
     return jsonify(products_and_prices)
+=======
+    total_price = 0
+    for item in basket:
+        for product in products:
+            # if item['product_id'] == product['id']:
+            if 'ProductPrice' in product and 'quantity' in item:
+                total_price += product['ProductPrice'] * item['quantity']
+                break  # Exit the inner loop once the product is found
+    return total_price
+
+
+@app.route('/checkout', methods=['POST'])
+def checkout():
+    # Clear the session to empty the basket
+    session.pop('basket', None)
+    # Render the basket template with the thank-you message shown
+    return render_template('basket.html', thank_you=True)
+>>>>>>> a10bb61d6b2dede8da1995223a1078f9eb2bd22a

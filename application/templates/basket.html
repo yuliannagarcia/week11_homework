@@ -23,9 +23,27 @@
             {% endif %}
         {% endfor %}
     </ul>
+<<<<<<< HEAD
     <p>Total Price: £{{ total_price }}</p>
+=======
+    <p>Total Price: ${{ total_price }}</p>
+    <img src="../static/ShoppingCart.jpeg" alt="Homepage Image" width="300">
+    <br>
+>>>>>>> a10bb61d6b2dede8da1995223a1078f9eb2bd22a
     <a href="{{ url_for('home') }}">Continue Shopping</a>
+  <!-- Checkout button -->
+    <form action="{{ url_for('checkout') }}" method="post">
+        <button type="submit">Checkout</button>
+    </form>
+
+    <!-- Thank you message div -->
+    {% if thank_you %}
+    <div id="thank_you_message">
+        <h2>Thank you for shopping with us!</h2>
+    </div>
+    {% endif %}
 </body>
 </html>
+
 {% endblock %}
 
