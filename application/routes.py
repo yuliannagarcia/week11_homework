@@ -69,3 +69,11 @@ def calculate_total_price(basket):
                 total_price += product['ProductPrice'] * item['quantity']
                 break  # Exit the inner loop once the product is found
     return total_price
+
+
+@app.route('/checkout', methods=['POST'])
+def checkout():
+    # Clear the session to empty the basket
+    session.pop('basket', None)
+    # Render the basket template with the thank-you message shown
+    return render_template('basket.html', thank_you=True)

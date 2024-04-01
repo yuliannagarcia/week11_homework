@@ -19,7 +19,19 @@
     <img src="../static/ShoppingCart.jpeg" alt="Homepage Image" width="300">
     <br>
     <a href="{{ url_for('home') }}">Continue Shopping</a>
+  <!-- Checkout button -->
+    <form action="{{ url_for('checkout') }}" method="post">
+        <button type="submit">Checkout</button>
+    </form>
+
+    <!-- Thank you message div -->
+    {% if thank_you %}
+    <div id="thank_you_message">
+        <h2>Thank you for shopping with us!</h2>
+    </div>
+    {% endif %}
 </body>
 </html>
+
 {% endblock %}
 
