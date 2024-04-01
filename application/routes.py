@@ -18,6 +18,7 @@ def add_to_basket(product_id):
         session.setdefault('basket', [])
         quantity = int(request.form['quantity'])  # Retrieve quantity from form data
         session['basket'].append({'product_id': product_id, 'quantity': quantity})
+        session.modified = True  # updating session with latest basket information
     return redirect(url_for('home'))
 
 
@@ -41,6 +42,7 @@ def view_basket():
     # Render the basket template
     return render_template('basket.html', basket=basket, products=products, total_price=total_price)
 
+
 # @app.route('/remove_from_basket/<int:product_id>')
 # def remove_from_basket(product_id):
 #     basket = session.get('basket', [])
@@ -49,14 +51,14 @@ def view_basket():
 #         session['basket'] = basket
 #     return redirect(url_for('view_basket'))
 
-
-@app.route('/add_product', methods=['POST'])
-def add_product():
-    name = request.form['name']
-    description = request.form['description']
-    price = float(request.form['price'])  # Convert price to float
-    add_product_to_database(name, description, price)
-    return redirect(url_for('home'))
+#
+# @app.route('/add_product', methods=['POST'])
+# def add_product():
+#     name = request.form['name']
+#     description = request.form['description']
+#     price = float(request.form['price'])  # Convert price to float
+#     add_product_to_database(name, description, price)
+#     return redirect(url_for('home'))
 
 
 def calculate_total_price(basket):
@@ -64,8 +66,8 @@ def calculate_total_price(basket):
     total_price = 0
     for item in basket:
         for product in products:
-            # if item['product_id'] == product['id']:
-            if 'ProductPrice' in product and 'quantity' in item:
+            if item['product_id'] == product['id']:
+                # if 'ProductPrice' in product and 'quantity' in item:
                 total_price += product['ProductPrice'] * item['quantity']
                 break  # Exit the inner loop once the product is found
     return total_price
