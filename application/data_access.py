@@ -1,31 +1,5 @@
 import mysql.connector
 
-from flask import render_template
-from application import app
-
-# @app.route('/')
-# @app.route('/home')
-# def home():
-#     products_ = get_products()  # Fetch products from the database
-#     return render_template('index.html', products=products_)
-
-# mydb = mysql.connector.connect(
-#     host="localhost",
-#     user="root",
-#     password="Pa$$w0rd",
-#     database="product_db"
-# )
-#
-#
-# def get_db_connection():
-#     mydb = mysql.connector.connect(
-#         host="localhost",
-#         user="root",
-#         password="Pa$$w0rd",
-#         database="product_db"
-#     )
-#     return mydb
-
 
 def connect_to_database():
     host = "localhost"
@@ -42,7 +16,7 @@ def connect_to_database():
         return conn
     except mysql.connector.Error as e:
         print(f"Error connecting to MySQL database: {e}")
-        return
+        return None
 
 
 def get_products():
@@ -81,16 +55,51 @@ def add_product_to_database(name, description, price):
         cursor.close()
         conn.close()
 
-# def add_product(productName, productDescription, productPrice):
-#     conn = connect_to_database()
-#     if conn is None:
-#         return False  # Return False if connection fails
-#
-#     try:
-#         cursor = conn.cursor()
-#         cursor.callproc("insertProduct", [productName, productDescription, productPrice])
-#         conn.commit()
-#         return True  # Return True if insertion succeeds
-#     except mysql.connector.Error as e:
-#         print(f"Error executing query: {e}")
-#         return False
+
+def remove_product_from_database(product_id):
+    conn = connect_to_database()
+    if conn is None:
+        return False
+
+    try:
+        cursor = conn.cursor()
+        cursor.callproc("removeProduct", [product_id])
+        conn.commit()
+        return True
+    except mysql.connector.Error as e:
+        print(f"Error executing query: {e}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def create_insert_product_stored_procedure():
+    conn = connect_to_database()
+    if conn is None:
+        return False
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            CREATE PROCEDURE insertProduct(
+                IN productName VARCHAR(55),
+                IN productDescription TEXT,
+                IN productPrice FLOAT
+            )
+            BEGIN
+                INSERT INTO product(productName, productDescription, productPrice)
+                VALUES(productName, productDescription, productPrice);
+            END
+        """)
+        return True
+    except mysql.connector.Error as e:
+        print(f"Error creating stored procedure: {e}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
+
+
+# Create the stored procedure if it doesn't exist
+create_insert_product_stored_procedure()

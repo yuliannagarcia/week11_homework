@@ -1,13 +1,6 @@
 {% extends "layout.html" %}
 
 {% block body_content %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Basket</title>
-</head>
-<body>
     <h1>Shopping Basket</h1>
     <ul>
         {% for item in basket %}
@@ -19,19 +12,17 @@
                     <p>{{ product.ProductDescription }}</p>
                     <p>Price: £{{ product.ProductPrice }}</p>
                     <p>Quantity: {{ item.quantity }}</p>
+                    <!-- Add remove item button here -->
+                    <form action="{{ url_for('remove_from_basket', product_id=item.product_id) }}" method="post">
+                        <button type="submit">Remove from Basket</button>
+                    </form>
                 </li>
             {% endif %}
         {% endfor %}
     </ul>
-<<<<<<< HEAD
     <p>Total Price: £{{ total_price }}</p>
-=======
-    <p>Total Price: ${{ total_price }}</p>
-    <img src="../static/ShoppingCart.jpeg" alt="Homepage Image" width="300">
-    <br>
->>>>>>> a10bb61d6b2dede8da1995223a1078f9eb2bd22a
     <a href="{{ url_for('home') }}">Continue Shopping</a>
-  <!-- Checkout button -->
+    <!-- Checkout button -->
     <form action="{{ url_for('checkout') }}" method="post">
         <button type="submit">Checkout</button>
     </form>
@@ -42,8 +33,5 @@
         <h2>Thank you for shopping with us!</h2>
     </div>
     {% endif %}
-</body>
-</html>
-
 {% endblock %}
 
