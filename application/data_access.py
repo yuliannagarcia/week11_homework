@@ -32,7 +32,6 @@
 #
 
 import mysql.connector
-from . import app
 
 
 def connect_to_database():
@@ -86,6 +85,7 @@ def add_product(productName, productDescription, productPrice):
 
 
 def add_product_to_database(name, description, price):
+    global cursor
     conn = connect_to_database()
     if conn is None:
         return False
