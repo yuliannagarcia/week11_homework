@@ -35,7 +35,9 @@ def view_basket():
         # Update the session
         session['basket'] = basket
 
-        return redirect(url_for('home'))
+        # Render the basket template
+        total_price = calculate_total_price(basket)
+        return render_template('basket.html', basket=basket, products=products, total_price=total_price)
     else:
         # If the request is GET, it means the user is viewing the basket
         basket = session.get('basket', [])
