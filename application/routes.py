@@ -1,8 +1,6 @@
-from flask import render_template, url_for, request, redirect, session, flash
+from flask import render_template, url_for, request, redirect, session
 from application import app
-from application.data_access import add_product_to_database, remove_product_from_database
 from application.data_access import get_products
-from flask import render_template, request
 
 
 @app.route('/')
@@ -89,15 +87,6 @@ def remove_from_basket(product_id):
                 break
         session['basket'] = basket
         return redirect(url_for('view_basket'))
-
-
-@app.route('/add_product', methods=['POST'])
-def add_product():
-    name = request.form['name']
-    description = request.form['description']
-    price = float(request.form['price'])  # Convert price to float
-    add_product_to_database(name, description, price)
-    return redirect(url_for('home'))
 
 
 def calculate_total_price(basket):

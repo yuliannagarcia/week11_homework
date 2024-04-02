@@ -56,18 +56,18 @@ def add_product_to_database(name, description, price):
         conn.close()
 
 
-def remove_product_from_database(product_id):
+def check_insert_product_stored_procedure():
     conn = connect_to_database()
     if conn is None:
         return False
 
     try:
         cursor = conn.cursor()
-        cursor.callproc("removeProduct", [product_id])
-        conn.commit()
-        return True
+        cursor.execute("SHOW PROCEDURE STATUS WHERE Db = 'product_db' AND Name = 'insertProduct'")
+        result = cursor.fetchone()
+        return result is not None
     except mysql.connector.Error as e:
-        print(f"Error executing query: {e}")
+        print(f"Error checking stored procedure existence: {e}")
         return False
     finally:
         cursor.close()
@@ -75,30 +75,34 @@ def remove_product_from_database(product_id):
 
 
 def create_insert_product_stored_procedure():
-    conn = connect_to_database()
-    if conn is None:
-        return False
+    if not check_insert_product_stored_procedure():
+        conn = connect_to_database()
+        if conn is None:
+            return False
 
-    try:
-        cursor = conn.cursor()
-        cursor.execute("""
-            CREATE PROCEDURE insertProduct(
-                IN productName VARCHAR(55),
-                IN productDescription TEXT,
-                IN productPrice FLOAT
-            )
-            BEGIN
-                INSERT INTO product(productName, productDescription, productPrice)
-                VALUES(productName, productDescription, productPrice);
-            END
-        """)
+        try:
+            cursor = conn.cursor()
+            cursor.execute("""
+                CREATE PROCEDURE insertProduct(
+                    IN productName VARCHAR(55),
+                    IN productDescription TEXT,
+                    IN productPrice FLOAT
+                )
+                BEGIN
+                    INSERT INTO product(productName, productDescription, productPrice)
+                    VALUES(productName, productDescription, productPrice);
+                END
+            """)
+            return True
+        except mysql.connector.Error as e:
+            print(f"Error creating stored procedure: {e}")
+            return False
+        finally:
+            cursor.close()
+            conn.close()
+    else:
+        print("Stored procedure insertProduct already exists.")
         return True
-    except mysql.connector.Error as e:
-        print(f"Error creating stored procedure: {e}")
-        return False
-    finally:
-        cursor.close()
-        conn.close()
 
 
 # Create the stored procedure if it doesn't exist
