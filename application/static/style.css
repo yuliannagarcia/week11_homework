@@ -53,31 +53,43 @@
         color: #005;
     }
 
-/* Navbar background */
-.navbar {
-    background-color: #f9e8e8;
-}
+    /* Navbar background */
+    .navbar {
+        background-color: #f9e8e8;
+    }
 
-/* Nav link color */
-.nav-link {
-    color: #007bff;
-}
+    /* Nav link color */
+    .nav-link {
+        color: black;
+    }
 
-.nav-link:hover {
-    color: #f9e8e8;
-}
+    .nav-link:hover {
+        color: #f9e8e8;
+    }
 
-/* Dropdown menu background */
-.dropdown-menu {
-    background-color: #f9e8e8;
-}
+    /* Dropdown menu background */
+    .dropdown-menu {
+        background-color: #f9e8e8;
+    }
 
 
-.dropdown-item {
-    color:  #f9e8e8;
-}
+    .dropdown-item {
+        color:  #f9e8e8;
+    }
 
-.dropdown-item:hover {
-    background-color: #f8f9fa;
-    color:  #f9e8e8;
-}
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+        color:  #f9e8e8;
+    }
+
+      .btn-login {
+        font-family: "Cinzel", serif;
+        background-color: transparent;
+        color: Black;
+        border: none;
+    }
+
+    .btn-login:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }

@@ -23,7 +23,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 cinzel-font">
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/home">Home</a>
                 </li>
@@ -34,9 +34,15 @@
                     <a class="nav-link" href="/basket">Basket</a>
                 </li>
             </ul>
+            {% if session.logged_in %}
+            <a class="btn btn-info" href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+            <a class="btn btn-info btn-login" href="{{ url_for('login') }}">Login</a>
+            {% endif %}
         </div>
     </div>
 </nav>
+
 <!-- First Container -->
 <div class="container-fluid bg-2 text-center">
     <a name="App"></a>
@@ -47,6 +53,7 @@
     <p>This is a demo application written in Python with the Flask micro web framework.</p>
     <p>It uses Jinja templates and Bootstrap 5.</p>
 </div>
+
 <!-- Second Container -->
 <div class="container-fluid bg-3 text-left">
     <a name="prod_info"></a>

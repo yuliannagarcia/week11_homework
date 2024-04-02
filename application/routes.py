@@ -5,7 +5,6 @@ from application.data_access import get_products
 from flask import render_template, request
 
 
-
 @app.route('/')
 @app.route('/home')
 def home():
@@ -13,6 +12,7 @@ def home():
 
 
 PRODUCTS_PER_PAGE = 6
+
 
 @app.route('/index')
 def index():
@@ -32,6 +32,7 @@ def index():
     paginated_products = products[start_index:end_index]
 
     return render_template('index.html', products=paginated_products, total_pages=total_pages, page=page)
+
 
 @app.route('/add_to_basket/<int:product_id>', methods=['POST'])
 def add_to_basket(product_id):
@@ -122,3 +123,21 @@ def checkout():
 
     # Render the checkout template with the total price
     return render_template('checkout.html', total_price=total_price)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        session['loggedIn'] = True
+        session['role'] = 'admin'  # Assuming role is hardcoded for simplicity
+        return redirect(url_for('all_products'))
+    return render_template('login.html', title="Login")
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    session.pop('role', None)
+    session['loggedIn'] = False
+    return redirect(url_for('all_products'))
