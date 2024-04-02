@@ -1,14 +1,14 @@
 {% extends "layout2.html" %}
 
 {% block body_content %}
-    <h1>Shopping Basket</h1>
+    <h1 class="cinzel-font">Shopping Basket</h1>
     <ul>
         {% for item in basket %}
             {% set product = products|selectattr('id', 'equalto', item.product_id)|list %}
             {% if product %}
                 {% set product = product[0] %}
                 <li>
-                    <h3>{{ product.ProductName }}</h3>
+                    <h3 class="cinzel-font">{{ product.ProductName }}</h3>
                     <p>{{ product.ProductDescription }}</p>
                     <p>Price: £{{ product.ProductPrice }}</p>
                     <p>Quantity: {{ item.quantity }}</p>
