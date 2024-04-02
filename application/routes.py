@@ -3,20 +3,19 @@ from application import app
 from application.data_access import get_products
 
 
+# Renders the home.html template when the / or /home endpoint is accessed.
 @app.route('/')
 @app.route('/home')
 def home():
     return render_template('home.html')
 
 
-PRODUCTS_PER_PAGE = 6
-
-
+# Renders the index.html template for displaying products.
 @app.route('/index')
 def index():
     page = request.args.get('page', 1, type=int)  # Get the page number from the query parameters
 
-    products = get_products()  # Fetch all products from the database
+    products = get_products()  # Fetches all products from the database
 
     # Calculate the total number of pages
     products_per_page = 6
@@ -29,9 +28,11 @@ def index():
     # Get the products for the current page
     paginated_products = products[start_index:end_index]
 
+    # Passes the paginated products, total pages, and current page number to the template.
     return render_template('index.html', products=paginated_products, total_pages=total_pages, page=page)
 
 
+# Handles the addition of products to the basket.
 @app.route('/add_to_basket/<int:product_id>', methods=['POST'])
 def add_to_basket(product_id):
     if request.method == 'POST':
@@ -43,14 +44,16 @@ def add_to_basket(product_id):
     return redirect(url_for('index'))
 
 
+# Renders the basket.html template for viewing the basket.
 @app.route('/basket', methods=['GET', 'POST'])
 def view_basket():
+    # Retrieves the basket and products from the session and database, respectively.
     basket = session.get('basket', [])
     products = get_products()
     total_price = calculate_total_price(basket)
 
+    # If the request is POST: Adds items to the basket based on user input
     if request.method == 'POST':
-        # If the request is POST, it means the user is adding items to the basket
         product_id = int(request.form['product_id'])
         quantity = int(request.form['quantity'])
 
