@@ -34,8 +34,9 @@
                     <a class="nav-link" href="/basket">Basket</a>
                 </li>
             </ul>
+            <a class="btn btn" href="/admin">Admin</a>
             {% if session.logged_in %}
-            <a class="btn btn-info" href="{{ url_for('logout') }}">Logout</a>
+            <a class="btn btn" href="{{ url_for('logout') }}">Logout</a>
             {% else %}
             <a class="btn btn-info btn-login" href="{{ url_for('login') }}">Login</a>
             {% endif %}

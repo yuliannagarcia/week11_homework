@@ -1,0 +1,43 @@
+{% extends "layout2.html" %}
+
+{% block body_content %}
+    <section>
+        <div class="form">
+            <form method="POST" action="/add_product">
+                {{ form.hidden_tag() }}
+                <div class="row">
+                    <div class="col-sm">{{ form.product_id.label }}</div>
+                    <div class="col-sm">{{ form.product_id }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">{{ form.quantity.label }}</div>
+                    <div class="col-sm">{{ form.quantity }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">{{ form.submit }}</div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <h1>Welcome to My Website</h1>
+
+    <!-- Remove Product Form -->
+    <form action="/remove_product" method="POST">
+        <input type="hidden" name="product_id" value="123"> <!-- Replace 123 with the actual product ID -->
+        <button type="submit">Remove Product</button>
+    </form>
+
+    <!-- Check Stored Procedure Form -->
+    <form action="/check_insert_product_stored_procedure" method="GET">
+        <button type="submit">Check Stored Procedure</button>
+    </form>
+
+    <!-- Display Products -->
+    <h2>Products</h2>
+    <ul>
+        {% for product in products %}
+            <li>{{ product.name }} - {{ product.price }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
